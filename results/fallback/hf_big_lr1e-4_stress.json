@@ -1,0 +1,110 @@
+{
+  "n": 300,
+  "metrics": {
+    "exact_match": 80.33,
+    "schema_valid": 100.0,
+    "parse_strict": 100.0,
+    "parse_lenient": 100.0,
+    "field_intent": 98.0,
+    "field_date": 87.33,
+    "field_time": 99.0,
+    "field_resource": 94.33,
+    "field_needs_clarification": 99.33,
+    "exact_match_ci95": [
+      75.67,
+      84.67
+    ]
+  },
+  "groups": {
+    "intent=book": {
+      "n": 91,
+      "exact_match": 73.63
+    },
+    "intent=reschedule": {
+      "n": 75,
+      "exact_match": 84.0
+    },
+    "intent=cancel": {
+      "n": 64,
+      "exact_match": 85.94
+    },
+    "intent=check": {
+      "n": 70,
+      "exact_match": 80.0
+    },
+    "complete": {
+      "n": 154,
+      "exact_match": 74.03
+    },
+    "missing_field": {
+      "n": 146,
+      "exact_match": 86.99
+    }
+  },
+  "missing_predictions": 0,
+  "error_types": {
+    "date_wrong": 38,
+    "resource_wrong": 16,
+    "intent_wrong": 6,
+    "time_invented": 2,
+    "needs_clarification_wrong": 2,
+    "time_wrong": 1,
+    "resource_invented": 1
+  },
+  "b": {
+    "n": 300,
+    "metrics": {
+      "exact_match": 0.0,
+      "schema_valid": 92.33,
+      "parse_strict": 100.0,
+      "parse_lenient": 100.0,
+      "field_intent": 73.67,
+      "field_date": 9.0,
+      "field_time": 55.0,
+      "field_resource": 4.67,
+      "field_needs_clarification": 48.33,
+      "exact_match_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    "groups": {
+      "intent=book": {
+        "n": 91,
+        "exact_match": 0.0
+      },
+      "intent=reschedule": {
+        "n": 75,
+        "exact_match": 0.0
+      },
+      "intent=cancel": {
+        "n": 64,
+        "exact_match": 0.0
+      },
+      "intent=check": {
+        "n": 70,
+        "exact_match": 0.0
+      },
+      "complete": {
+        "n": 154,
+        "exact_match": 0.0
+      },
+      "missing_field": {
+        "n": 146,
+        "exact_match": 0.0
+      }
+    }
+  },
+  "paired_a_minus_b": {
+    "exact_match_diff": 80.33,
+    "ci95": [
+      75.67,
+      84.67
+    ],
+    "a_only_correct": 241,
+    "b_only_correct": 0
+  },
+  "name": "hf_big_lr1e-4",
+  "split": "stress",
+  "vs": "base_1p7b"
+}

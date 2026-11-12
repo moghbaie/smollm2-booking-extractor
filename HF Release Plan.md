@@ -1,6 +1,6 @@
 # Plan: Publish the LoRA adapter on Hugging Face
 
-Nov 11, 2026 · repo: `moghbaie/smollm2-<size>-booking-extractor-lora`, where <size> is 1.7b or 360m (private first)
+Nov 11, 2026 · repo: `moghbaie/smollm2-1.7b-booking-extractor-lora` (private first)
 
 ## Goal
 
@@ -17,12 +17,11 @@ and a quickstart notebook that anyone can run on a free Colab runtime.
 Not uploaded: `checkpoint-*/`, optimizer and scheduler states, `trainer_state.json`,
 `training_args.bin`, TensorBoard logs, tokenizer files (the base model's tokenizer is used).
 
-## Step 0 — Choose the model (after the 1.7B notebook finishes)
+## Step 0 — Choose the model ✅ decided
 
-| If the 1.7B notebook shows | Publish |
-|---|---|
-| 5.1, 5.2 (booking task) and 6.1, 6.2 (IFEval/HellaSwag above the 360M, no forgetting) pass | the 1.7B `BEST_1P7B` from `MyDrive/soup-sprint-1p7b/runs/` |
-| otherwise | `ep_3` from `MyDrive/soup-sprint/runs/ep_3` |
+**`v3_big`** (`MyDrive/soup-sprint-v3/runs/v3_big`, local copy `hf_release/v3/`). It passed the v3 release rule
+(3.1–3.5 and 4.1): v3 test 95.00, v3 stress 77.00, v2 test 97.00, v2 stress 85.00; IFEval 47.69 ± 2.15,
+HellaSwag 71.74 ± 0.45. Previous candidate `hf_big_lr1e-4` (`hf_release/v2/`) is kept only for comparison.
 
 **Checks**
 
@@ -54,15 +53,16 @@ Sections:
    tags `lora`, `peft`, `json`, `information-extraction`, `smollm2`.
 2. **What it does**: booking request → JSON with `intent`, `date`, `time`, `resource`, `needs_clarification`.
 3. **Output rules**: 4 intents; `null` for anything not stated; required fields per intent.
-4. **Prompt format (exact)**: the instruction text from `scripts/common.py`, then
-   `Today is <Weekday>, <YYYY-MM-DD>.` and `Request: <text>`, sent as one user message
+4. **Prompt format (exact)**: `INSTRUCTION_V3` from `scripts/generate_data_v3.py`, then `Today is <Weekday>, <YYYY-MM-DD>.`,
+   the 21-day `Calendar: ...` line and `Request: <text>` (`build_prompt_v3`), sent as one user message
    through the chat template. Greedy decoding.
 5. **Usage**: a short Python snippet (load the base model and the adapter, generate, `json.loads`).
 6. **Results**: test and stress exact match with CI95 vs the base model; IFEval and HellaSwag with standard errors
    for the untouched and tuned model, and next to the other size (the 1.7B vs 360M table from Phase 6).
-7. **Training**: synthetic data (rule-made labels, template-family splits), LoRA r16/α32, lr 2e-4,
-   3 epochs, 10% replay, Soup, A100.
-8. **Limitations**: synthetic English data; 8 fixed resource names; relative-date arithmetic errors;
+7. **Training**: synthetic v3 data (rule-made labels, template-family splits), LoRA r16/α32/0.05 on all
+   linear layers, lr 1e-4, 3 epochs, batch 16, 10% replay, answer-only loss, `scripts/train_hf.py`, A100 40 GB, 13 min.
+8. **Limitations**: synthetic English data; 8 fixed resource names; day counting ("in two weeks",
+   "N days from now") and possible invalid dates; needs the calendar prompt;
    lower accuracy on unseen wording (stress score); not for production booking without validation.
 9. **Links**: GitHub repo, base model.
 
@@ -71,7 +71,7 @@ Sections:
 | # | Check | Pass when |
 |---|---|---|
 | 2.1 | Metadata | the YAML header parses (`huggingface_hub.ModelCard.load` reads it without errors) |
-| 2.2 | Prompt matches | the instruction in the card equals `common.INSTRUCTION` (automatic test) |
+| 2.2 | Prompt matches | the prompt in the card equals `generate_data_v3.build_prompt_v3` output (automatic test) |
 | 2.3 | Numbers match | every score in the card equals the value in that run's `reports/*.json` |
 | 2.4 | Your eyes | you read the card once and agree with the limitations section |
 
@@ -79,10 +79,10 @@ Sections:
 
 Cells:
 
-1. Title and what the notebook does; runs on a free T4 (the 1.7B on CPU works but takes several seconds per request).
+1. Title and what the notebook does; runs on a free T4 (on CPU it works but takes several seconds per request).
 2. `pip install transformers peft`.
-3. Load `HuggingFaceTB/SmolLM2-360M-Instruct` and the adapter from the Hub.
-4. `build_prompt(request, today)`: the exact instruction, same as the card.
+3. Load `HuggingFaceTB/SmolLM2-1.7B-Instruct` and the adapter from the Hub.
+4. `build_prompt(request, today)`: instruction, today line and 21-day calendar, identical to `build_prompt_v3`.
 5. `extract(request, today)`: chat template → greedy generation → `json.loads` → schema check.
 6. Four examples: a full booking, a reschedule with a relative date, a cancel with a missing date
    (`needs_clarification: true`), a noisy request.
@@ -97,11 +97,11 @@ Cells:
 | 3.2 | Same prompt | `build_prompt` gives exactly the prompt the evaluation used (automatic test) |
 | 3.3 | Runs locally | runs top to bottom against the local adapter folder (before upload) with valid JSON for all 4 examples |
 
-## Step 4 — Prepare the upload folder (in the 1.7B Colab notebook, optional cell)
+## Step 4 — Prepare the upload folder (local, from `hf_release/v3/`)
 
 A cell switched off by default (`PUSH_TO_HUB = False`) that:
 
-1. copies only `adapter_config.json` and `adapter_model.safetensors` from `RELEASE_RUN` into `hf_release/`;
+1. uses only `adapter_config.json` and `adapter_model.safetensors` from `hf_release/v3/`;
 2. adds `README.md` and `quickstart.ipynb`;
 3. lists the folder with file sizes before anything is uploaded.
 
@@ -110,7 +110,7 @@ A cell switched off by default (`PUSH_TO_HUB = False`) that:
 | # | Check | Pass when |
 |---|---|---|
 | 4.1 | Minimal | `hf_release/` holds exactly the 4 files, total < 100 MB |
-| 4.2 | Right adapter | `adapter_config.json` names the matching base (1.7B or 360M) and r = 16 |
+| 4.2 | Right adapter | `adapter_config.json` names SmolLM2-1.7B-Instruct, r = 16, 7 target modules |
 | 4.3 | Loads | `PeftModel.from_pretrained(base, "hf_release")` loads, and its answers on 20 test rows equal the saved predictions |
 
 ## Step 5 — Upload (private)
@@ -150,7 +150,7 @@ Add the Hub link to the GitHub README.
 - `hf_release/README.md` with placeholders for the scores until Step 0
 - `hf_release/quickstart.ipynb` and `build_release.py` that generates it
 - `tests/test_release.py`: checks 2.2, 3.2 and the card metadata
-- one optional cell in `build_notebook_1p7b.py` for Steps 4–5 (`PUSH_TO_HUB = False`)
+- an upload script `scripts/push_release.py` for Steps 4–5 (reads `HF_TOKEN` from the environment; dry run by default)
 
 ## Time
 

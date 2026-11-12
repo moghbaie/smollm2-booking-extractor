@@ -42,3 +42,15 @@ def field_by_tier(gold_rows: list[dict], preds: dict) -> dict:
         for slot, form in r.get("forms", {}).items():
             acc[f"{slot}/{form.split(':')[0]}"].append(float(sc[f"field_{slot}"]))
     return {k: {"n": len(v), "accuracy": ev.pct(sum(v) / len(v))} for k, v in sorted(acc.items())}
+
+
+def field_by_form(gold_rows: list[dict], preds: dict, slot: str = "date") -> dict:
+    """Accuracy of one field per wording form ("extra:in_two_weeks", ...); "+noise" marks rows whose value was noised."""
+    s = _scores(gold_rows, preds)
+    acc = defaultdict(list)
+    for r, sc in zip(gold_rows, s):
+        form = r.get("forms", {}).get(slot)
+        if form:
+            noised = any(o.startswith(f"{slot}_") for o in r.get("noise", []))
+            acc[form + ("+noise" if noised else "")].append(float(sc[f"field_{slot}"]))
+    return {k: {"n": len(v), "accuracy": ev.pct(sum(v) / len(v))} for k, v in sorted(acc.items())}

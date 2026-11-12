@@ -1,0 +1,251 @@
+{
+  "groups": {
+    "hf_small_v2": {
+      "both": {
+        "n": 79,
+        "exact_match": 60.76,
+        "ci95": [
+          50.63,
+          70.89
+        ]
+      },
+      "new_wording": {
+        "n": 102,
+        "exact_match": 54.9,
+        "ci95": [
+          45.1,
+          64.71
+        ]
+      },
+      "noise_only": {
+        "n": 119,
+        "exact_match": 83.19,
+        "ci95": [
+          76.47,
+          89.92
+        ]
+      }
+    },
+    "big_lr1e-4": {
+      "both": {
+        "n": 79,
+        "exact_match": 69.62,
+        "ci95": [
+          59.49,
+          79.75
+        ]
+      },
+      "new_wording": {
+        "n": 102,
+        "exact_match": 72.55,
+        "ci95": [
+          63.73,
+          81.37
+        ]
+      },
+      "noise_only": {
+        "n": 119,
+        "exact_match": 90.76,
+        "ci95": [
+          85.71,
+          95.8
+        ]
+      }
+    },
+    "hf_big_lr1e-4": {
+      "both": {
+        "n": 79,
+        "exact_match": 69.62,
+        "ci95": [
+          59.49,
+          79.75
+        ]
+      },
+      "new_wording": {
+        "n": 102,
+        "exact_match": 72.55,
+        "ci95": [
+          63.73,
+          81.37
+        ]
+      },
+      "noise_only": {
+        "n": 119,
+        "exact_match": 94.12,
+        "ci95": [
+          89.08,
+          97.48
+        ]
+      }
+    }
+  },
+  "hf_vs_small": {
+    "both": {
+      "n": 79,
+      "exact_match": 69.62,
+      "ci95": [
+        59.49,
+        79.75
+      ],
+      "paired_a_minus_b": {
+        "exact_match_diff": 8.86,
+        "ci95": [
+          0.0,
+          18.99
+        ],
+        "a_only_correct": 11,
+        "b_only_correct": 4
+      }
+    },
+    "new_wording": {
+      "n": 102,
+      "exact_match": 72.55,
+      "ci95": [
+        63.73,
+        81.37
+      ],
+      "paired_a_minus_b": {
+        "exact_match_diff": 17.65,
+        "ci95": [
+          7.84,
+          27.45
+        ],
+        "a_only_correct": 23,
+        "b_only_correct": 5
+      }
+    },
+    "noise_only": {
+      "n": 119,
+      "exact_match": 94.12,
+      "ci95": [
+        89.08,
+        97.48
+      ],
+      "paired_a_minus_b": {
+        "exact_match_diff": 10.92,
+        "ci95": [
+          3.36,
+          18.49
+        ],
+        "a_only_correct": 18,
+        "b_only_correct": 5
+      }
+    }
+  },
+  "tiers": {
+    "hf_small_v2": {
+      "date/base": {
+        "n": 40,
+        "accuracy": 80.0
+      },
+      "date/extra": {
+        "n": 28,
+        "accuracy": 85.71
+      },
+      "date/heldout": {
+        "n": 137,
+        "accuracy": 55.47
+      },
+      "resource/base": {
+        "n": 30,
+        "accuracy": 100.0
+      },
+      "resource/extra": {
+        "n": 42,
+        "accuracy": 100.0
+      },
+      "resource/heldout": {
+        "n": 120,
+        "accuracy": 87.5
+      },
+      "time/base": {
+        "n": 34,
+        "accuracy": 100.0
+      },
+      "time/extra": {
+        "n": 30,
+        "accuracy": 93.33
+      },
+      "time/heldout": {
+        "n": 128,
+        "accuracy": 92.97
+      }
+    },
+    "big_lr1e-4": {
+      "date/base": {
+        "n": 40,
+        "accuracy": 92.5
+      },
+      "date/extra": {
+        "n": 28,
+        "accuracy": 100.0
+      },
+      "date/heldout": {
+        "n": 137,
+        "accuracy": 72.26
+      },
+      "resource/base": {
+        "n": 30,
+        "accuracy": 100.0
+      },
+      "resource/extra": {
+        "n": 42,
+        "accuracy": 100.0
+      },
+      "resource/heldout": {
+        "n": 120,
+        "accuracy": 85.83
+      },
+      "time/base": {
+        "n": 34,
+        "accuracy": 100.0
+      },
+      "time/extra": {
+        "n": 30,
+        "accuracy": 90.0
+      },
+      "time/heldout": {
+        "n": 128,
+        "accuracy": 99.22
+      }
+    },
+    "hf_big_lr1e-4": {
+      "date/base": {
+        "n": 40,
+        "accuracy": 97.5
+      },
+      "date/extra": {
+        "n": 28,
+        "accuracy": 96.43
+      },
+      "date/heldout": {
+        "n": 137,
+        "accuracy": 73.72
+      },
+      "resource/base": {
+        "n": 30,
+        "accuracy": 100.0
+      },
+      "resource/extra": {
+        "n": 42,
+        "accuracy": 100.0
+      },
+      "resource/heldout": {
+        "n": 120,
+        "accuracy": 86.67
+      },
+      "time/base": {
+        "n": 34,
+        "accuracy": 100.0
+      },
+      "time/extra": {
+        "n": 30,
+        "accuracy": 96.67
+      },
+      "time/heldout": {
+        "n": 128,
+        "accuracy": 100.0
+      }
+    }
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "n": 300,
+  "metrics": {
+    "exact_match": 96.67,
+    "schema_valid": 100.0,
+    "parse_strict": 100.0,
+    "parse_lenient": 100.0,
+    "field_intent": 100.0,
+    "field_date": 96.67,
+    "field_time": 100.0,
+    "field_resource": 100.0,
+    "field_needs_clarification": 100.0,
+    "exact_match_ci95": [
+      94.33,
+      98.67
+    ]
+  },
+  "groups": {
+    "intent=book": {
+      "n": 74,
+      "exact_match": 98.65
+    },
+    "intent=reschedule": {
+      "n": 84,
+      "exact_match": 95.24
+    },
+    "intent=cancel": {
+      "n": 72,
+      "exact_match": 98.61
+    },
+    "intent=check": {
+      "n": 70,
+      "exact_match": 94.29
+    },
+    "complete": {
+      "n": 157,
+      "exact_match": 95.54
+    },
+    "missing_field": {
+      "n": 143,
+      "exact_match": 97.9
+    }
+  },
+  "missing_predictions": 0,
+  "error_types": {
+    "date_wrong": 10
+  },
+  "b": {
+    "n": 300,
+    "metrics": {
+      "exact_match": 2.0,
+      "schema_valid": 98.0,
+      "parse_strict": 100.0,
+      "parse_lenient": 100.0,
+      "field_intent": 74.33,
+      "field_date": 18.33,
+      "field_time": 62.0,
+      "field_resource": 30.0,
+      "field_needs_clarification": 49.33,
+      "exact_match_ci95": [
+        0.67,
+        3.67
+      ]
+    },
+    "groups": {
+      "intent=book": {
+        "n": 74,
+        "exact_match": 4.05
+      },
+      "intent=reschedule": {
+        "n": 84,
+        "exact_match": 1.19
+      },
+      "intent=cancel": {
+        "n": 72,
+        "exact_match": 1.39
+      },
+      "intent=check": {
+        "n": 70,
+        "exact_match": 1.43
+      },
+      "complete": {
+        "n": 157,
+        "exact_match": 3.82
+      },
+      "missing_field": {
+        "n": 143,
+        "exact_match": 0.0
+      }
+    }
+  },
+  "paired_a_minus_b": {
+    "exact_match_diff": 94.67,
+    "ci95": [
+      92.0,
+      97.0
+    ],
+    "a_only_correct": 284,
+    "b_only_correct": 0
+  },
+  "name": "hf_big_lr1e-4",
+  "split": "test",
+  "vs": "base_1p7b"
+}
